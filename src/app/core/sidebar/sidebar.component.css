@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: 300px;
+  font-size: 1.5rem;
+  padding: 5rem 1rem 1rem 1rem;
+  flex-shrink: 0;
+  background-color: white;
+  box-shadow: 5px 1px 8px 0px rgb(0 0 0 / 20%);
+}
+nav {
+  position: fixed;
+  width: 300px;
+}
+.active {
+  color: green;
+  font-weight: 500;
+}
+li:hover {
+  color: green;
+}

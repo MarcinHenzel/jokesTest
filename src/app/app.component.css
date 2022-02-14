@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.sidebar-container{
+    flex-grow: 1;
+    display: flex;
+}
+.content-wrapper {
+    margin: 4rem;
+    padding: 2rem;
+    flex-grow: 1;
+}

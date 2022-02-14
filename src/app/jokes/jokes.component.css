@@ -1,0 +1,17 @@
+:host {
+    display:flex;
+    flex-direction: column;
+}
+.list-settings {
+    height: 300px;
+    width: 100%;
+    background-color: grey;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+.list {
+    flex-grow: 1;
+    border: 1px solid black;
+    margin: 2rem;
+    width: 100%;
+}
