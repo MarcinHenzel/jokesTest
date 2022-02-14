@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-settings-joke',
@@ -8,14 +7,19 @@ import { FormControl } from '@angular/forms';
 })
 export class SettingsJokeComponent implements OnInit {
   pages = [2, 5, 10];
-  pickedPage = new FormControl(5);
+  pickedPage = this.pages[1];
   @Output() pageChange = new EventEmitter();
-  constructor() {}
+  constructor() {
+    this.pickedPage = parseInt(window.localStorage.getItem('pageSize') || '5');
+  }
 
   ngOnInit(): void {
+    this.pageChange.emit(this.pickedPage)
+  ;
   }
-  pageSizeChanged(value: any) {
-    this.pageChange.emit(value);
 
+  pageSizeChanged(value: any) {
+    window.localStorage.setItem('pageSize', value);
+    this.pageChange.emit(value);
   }
 }
