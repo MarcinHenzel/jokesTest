@@ -14,6 +14,7 @@ import { JokesService } from '../jokes.service';
 export class TableJokeComponent implements AfterViewInit {
   displayedColumns: string[] = ['image', 'id', 'jokeContent', 'category'];
   data: Joke[] = [];
+  imageToShow: any;
   pageSize!: number ;
   isInit: boolean = false;
   @Input() set changePageSize(pageSize: any) {
@@ -52,15 +53,16 @@ export class TableJokeComponent implements AfterViewInit {
         }
 
         this.resultsLength = data.amount;
-        data.jokes.map((joke) => {
-
-          return {...joke, imgSrc:'https://picsum.photos/200/300'}
+        return data.jokes.map((joke) => {
+          const randomizer = Math.ceil((Math.random() * 1000));
+          return {...joke, imgSrc:`https://picsum.photos/id/${randomizer}/200/300`}
         });
-        return data.jokes;
+       
       })
     )
     .subscribe((jokes) => {
       this.data = jokes
     });
   }
+  
 }
