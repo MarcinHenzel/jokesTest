@@ -1,0 +1,54 @@
+<div class="loading-shade" *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+
+<div >
+  <table
+    mat-table
+    [dataSource]="data"
+    matSort
+    matSortActive="created"
+    matSortDisableClear
+    matSortDirection="desc"
+  >
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let row">
+        <img src="https://picsum.photos/200/300" />
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="jokeContent">
+      <th mat-header-cell *matHeaderCellDef>Joke Content</th>
+      <td mat-cell *matCellDef="let row">
+        <p *ngIf="row.type === 'twopart'">
+          <span>{{ row.setup }}</span>
+          <br />
+          <br />
+          <span> {{ row.delivery }}</span>
+        </p>
+        <p *ngIf="row.type !== 'twopart'">
+          <span>{{ row.joke }}</span>
+        </p>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let row">{{ row.category }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<mat-paginator
+  [length]="resultsLength"
+  [pageSize]="pageSize"
+></mat-paginator>

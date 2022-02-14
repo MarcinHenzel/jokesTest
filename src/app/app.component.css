@@ -8,7 +8,6 @@
     display: flex;
 }
 .content-wrapper {
-    margin: 4rem;
-    padding: 2rem;
+    margin: 5rem 2rem 2rem 2rem;
     flex-grow: 1;
 }

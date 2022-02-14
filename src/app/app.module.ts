@@ -6,6 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
 import { JokesModule } from './jokes/jokes.module';
+import { MaterialsModule } from './utils/materials.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { JokesModule } from './jokes/jokes.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    JokesModule
+    JokesModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

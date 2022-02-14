@@ -1,0 +1,10 @@
+<div>
+  <label>Amount of pages:</label>
+  <mat-form-field>
+    <mat-select (selectionChange)="pageSizeChanged($event.value)">
+      <mat-option *ngFor="let page of pages" [value]="page">{{
+        page
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
