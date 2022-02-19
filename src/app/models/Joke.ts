@@ -17,7 +17,7 @@ export interface ErrorJokeResponse {
 
 export type Joke = SingleJoke | TwoPart;
 export interface BaseJoke {
-  category: string;
+  category: Category;
   flags: Flags;
   id: number;
   lang: Lang;
@@ -41,7 +41,6 @@ export type Category =
   | 'Pun'
   | 'Spooky'
   | 'Christmas'
-  | 'Any';
 export type Lang = 'de' | 'en' | 'es' | 'cs' | 'fr' | 'pt';
 export interface Flags {
   nsfw: boolean;

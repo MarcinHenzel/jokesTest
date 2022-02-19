@@ -1,4 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Category } from 'src/app/models/Joke';
+import { JokesService } from '../jokes.service';
 
 @Component({
   selector: 'app-settings-joke',
@@ -6,20 +9,19 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./settings-joke.component.css'],
 })
 export class SettingsJokeComponent implements OnInit {
-  pages = [2, 5, 10];
-  pickedPage = this.pages[1];
-  @Output() pageChange = new EventEmitter();
-  constructor() {
-    this.pickedPage = parseInt(window.localStorage.getItem('pageSize') || '5');
+  categories = new FormControl();
+
+  filterCategories!: Category[];
+  constructor(private jokesService: JokesService) {
+    this.filterCategories = this.jokesService.selectedCategories;
+    this.categories.setValue(this.jokesService.selectedCategories);
   }
 
   ngOnInit(): void {
-    this.pageChange.emit(this.pickedPage)
-  ;
+    this.categories.valueChanges.subscribe(data => {
+      this.jokesService.updateSelectedCategories(data)
+    })
   }
 
-  pageSizeChanged(value: any) {
-    window.localStorage.setItem('pageSize', value);
-    this.pageChange.emit(value);
-  }
+  
 }

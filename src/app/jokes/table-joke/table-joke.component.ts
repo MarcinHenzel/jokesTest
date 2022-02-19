@@ -1,9 +1,15 @@
-import { Component, ViewChild, AfterViewInit, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  AfterViewInit,
+  OnInit,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort} from '@angular/material/sort';
-import { merge,  Observable,  of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable  } from 'rxjs';
 import { Joke } from 'src/app/models/Joke';
+import { JokeLocalStorageService } from '../joke-local-storage.service';
 import { JokesService } from '../jokes.service';
 
 @Component({
@@ -13,62 +19,60 @@ import { JokesService } from '../jokes.service';
 })
 export class TableJokeComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['image', 'id', 'jokeContent', 'category'];
-  data: Joke[] = [];
   imageToShow: any;
-  pageSize!: number ;
-  isInit: boolean = false;
-  @Input() set changePageSize(pageSize: any) {
-    this.pageSize = pageSize;
- /*    if(this.isInit) {this.getJokes()}; */
-  };
-  resultsLength = 0;
+  pageSize$!: Observable<number>;
+  dataSource: MatTableDataSource<Joke> = new MatTableDataSource();
   isLoadingResults = true;
   jokes$!: Observable<Joke[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort!: MatSort;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private jokesService: JokesService) {
-    
+  constructor(private jokesService: JokesService, private jokeLocal: JokeLocalStorageService) {
+    this.pageSize$ = this.jokeLocal.jokePageSize$;
   }
   ngOnInit(): void {
-    this.jokes$ = this.jokesService.jokes$;
-  }
- 
-  ngAfterViewInit() {
-    this.isInit = true;
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    this.changePageSize = parseInt(window.localStorage.getItem('pageSize') || '5');
-    /* this.getJokes(); */
-    /* this.jokesService.initJokes().subscribe((first) => {console.log( first); }) */
-  }
-/*   getJokes(){
-    merge(this.sort.sortChange, this.paginator.page)
-    .pipe(
-      startWith({}),
-      switchMap(() => {
-        this.isLoadingResults = true;
-        return this.jokesService
-          .getJokes(this.pageSize)
-          .pipe(catchError(() => observableOf(null)));
-      }),
-      map((jokes) => {
-        this.isLoadingResults = false;
-
-        if (jokes === null) {
-          return [];
-        }
-
-         this.resultsLength = amount; 
-        return jokes.map((joke) => {
-          const randomizer = Math.ceil((Math.random() * 1000));
-          return {...joke, imgSrc:`https://picsum.photos/id/${randomizer}/200/300`}
-        });
-       
-      })
-    )
-    .subscribe((jokes) => {
-      this.data = jokes
+    this.jokesService.jokes$.subscribe((jokes) => {
+      this.dataSource.data = jokes;
     });
+  }
+
+  ngAfterViewInit() {
+    console.log(this.sort);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.paginator.page.subscribe((pageEvent) => this.jokeLocal.changeJokePageSize(pageEvent.pageSize))
+  }
+  // jokes.filter((el) => !categoryFilter.includes(el.category))
+  //.sort((a,b)=> this.isAsc ? a-b : b-a)
+  //.slice(page * pageSize, page * pageSize + pageSize)
+/*   initSortAndPagination() {
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.exampleDatabase!.getRepoIssues(
+            this.sort.active,
+            this.sort.direction,
+            this.paginator.pageIndex
+          ).pipe(catchError(() => observableOf(null)));
+        }),
+        map((data) => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.isRateLimitReached = data === null;
+
+          if (data === null) {
+            return [];
+          }
+
+          // Only refresh the result length if there is new data. In case of rate
+          // limit errors, we do not want to reset the paginator to zero, as that
+          // would prevent users from re-triggering requests.
+          this.resultsLength = data.total_count;
+          return data.items;
+        })
+      )
+      .subscribe((data) => (this.data = data));
   } */
-  
 }

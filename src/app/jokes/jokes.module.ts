@@ -4,6 +4,7 @@ import { JokesComponent } from './jokes.component';
 import { TableJokeComponent } from './table-joke/table-joke.component';
 import { SettingsJokeComponent } from './settings-joke/settings-joke.component';
 import { MaterialsModule } from '../materials.module';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     JokesComponent,
@@ -12,7 +13,8 @@ import { MaterialsModule } from '../materials.module';
   ],
   imports: [
     CommonModule,
-    MaterialsModule
+    MaterialsModule,
+    ReactiveFormsModule,
   ]
 })
 export class JokesModule { }

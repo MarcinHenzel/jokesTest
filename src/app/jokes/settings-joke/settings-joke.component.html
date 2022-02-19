@@ -1,10 +1,13 @@
-<div>
-  <label>Amount of pages:</label>
-  <mat-form-field>
-    <mat-select [(value)]="pickedPage" (selectionChange)="pageSizeChanged($event.value)">
-      <mat-option *ngFor="let page of pages" [value]="page">{{
-        page
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
+
+ <mat-form-field >
+  <mat-label>Categories</mat-label>
+  <mat-select [formControl]="categories" multiple [value]="'programming'">
+    <mat-select-trigger>
+      {{categories.value ? categories.value[0] : ''}}
+      <span *ngIf="categories.value?.length > 1" class="example-additional-selection">
+        (+{{categories.value.length - 1}} {{categories.value?.length === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let category of filterCategories" [value]="category" >{{category}}</mat-option>
+  </mat-select>
+</mat-form-field>

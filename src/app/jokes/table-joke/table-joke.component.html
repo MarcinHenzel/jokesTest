@@ -1,15 +1,14 @@
 <div>
   <table
-    *ngIf="jokes$ | async as jokes; else spinner"
     mat-table
-    [dataSource]="jokes"
+    [dataSource]="dataSource"
     matSort
-    matSortActive="created"
+    matSortActive="id"
     matSortDisableClear
-    matSortDirection="desc"
+    matSortDirection="asc"
   >
     <ng-container matColumnDef="image">
-      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <th   mat-header-cell *matHeaderCellDef>Image</th>
       <td mat-cell *matCellDef="let row">
         <img
           [ngClass]="{
@@ -17,13 +16,13 @@
             dark: row.category === 'Dark',
             blurred: row.flags.racist
           }"
-          [src]="row.imgSrc"
+          src="{{'https://picsum.photos/200/300?random=' + row.id}}"
         />
       </td>
     </ng-container>
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header>Id</th>
       <td mat-cell *matCellDef="let row">{{ row.id }}</td>
     </ng-container>
 
@@ -51,10 +50,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
-<ng-template #spinner>
+<!-- <ng-template #spinner>
   <div #spinner class="loading-shade">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
   </div>
-</ng-template>
+</ng-template> -->
 
-<mat-paginator [length]="resultsLength" [pageSize]="pageSize"></mat-paginator>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="dataSource.data.length" [pageSize]="pageSize$ | async"></mat-paginator>
