@@ -1,7 +1,7 @@
-import { Component, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, Input, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort} from '@angular/material/sort';
-import { merge,  of as observableOf } from 'rxjs';
+import { merge,  Observable,  of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Joke } from 'src/app/models/Joke';
 import { JokesService } from '../jokes.service';
@@ -11,7 +11,7 @@ import { JokesService } from '../jokes.service';
   templateUrl: './table-joke.component.html',
   styleUrls: ['./table-joke.component.css'],
 })
-export class TableJokeComponent implements AfterViewInit {
+export class TableJokeComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['image', 'id', 'jokeContent', 'category'];
   data: Joke[] = [];
   imageToShow: any;
@@ -19,23 +19,29 @@ export class TableJokeComponent implements AfterViewInit {
   isInit: boolean = false;
   @Input() set changePageSize(pageSize: any) {
     this.pageSize = pageSize;
-    if(this.isInit) {this.getJokes()};
+ /*    if(this.isInit) {this.getJokes()}; */
   };
   resultsLength = 0;
   isLoadingResults = true;
-
+  jokes$!: Observable<Joke[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
 
-  constructor(private jokesService: JokesService) {}
+  constructor(private jokesService: JokesService) {
+    
+  }
+  ngOnInit(): void {
+    this.jokes$ = this.jokesService.jokes$;
+  }
  
   ngAfterViewInit() {
     this.isInit = true;
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
     this.changePageSize = parseInt(window.localStorage.getItem('pageSize') || '5');
-    this.getJokes();
+    /* this.getJokes(); */
+    /* this.jokesService.initJokes().subscribe((first) => {console.log( first); }) */
   }
-  getJokes(){
+/*   getJokes(){
     merge(this.sort.sortChange, this.paginator.page)
     .pipe(
       startWith({}),
@@ -45,15 +51,15 @@ export class TableJokeComponent implements AfterViewInit {
           .getJokes(this.pageSize)
           .pipe(catchError(() => observableOf(null)));
       }),
-      map((data) => {
+      map((jokes) => {
         this.isLoadingResults = false;
 
-        if (data === null) {
+        if (jokes === null) {
           return [];
         }
 
-        this.resultsLength = data.amount;
-        return data.jokes.map((joke) => {
+         this.resultsLength = amount; 
+        return jokes.map((joke) => {
           const randomizer = Math.ceil((Math.random() * 1000));
           return {...joke, imgSrc:`https://picsum.photos/id/${randomizer}/200/300`}
         });
@@ -63,6 +69,6 @@ export class TableJokeComponent implements AfterViewInit {
     .subscribe((jokes) => {
       this.data = jokes
     });
-  }
+  } */
   
 }

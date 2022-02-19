@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { JokesComponent } from './jokes.component';
 import { TableJokeComponent } from './table-joke/table-joke.component';
 import { SettingsJokeComponent } from './settings-joke/settings-joke.component';
-import { MaterialsModule } from '../utils/materials.module';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MaterialsModule } from '../materials.module';
 @NgModule({
   declarations: [
     JokesComponent,

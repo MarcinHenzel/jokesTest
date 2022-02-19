@@ -1,5 +1,22 @@
+export type JokeResponse = SuccessJokeResponse ; 
+
+export interface SuccessJokeResponse {
+  error: 'false';
+  amount: number;
+  jokes: Joke[];
+}
+export interface ErrorJokeResponse {
+  error: 'true';
+  internalError: boolean;
+  code: number;
+  message: string;
+  causedBy: string[];
+  additionalInfo: string;
+  timestamp: number;
+}
+
 export type Joke = SingleJoke | TwoPart;
-interface BaseJoke {
+export interface BaseJoke {
   category: string;
   flags: Flags;
   id: number;
