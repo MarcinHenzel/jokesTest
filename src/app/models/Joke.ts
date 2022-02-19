@@ -16,13 +16,13 @@ export interface ErrorJokeResponse {
 }
 
 export type Joke = SingleJoke | TwoPart;
+export type JokeWithImage = Joke & {imgSrc:string};
 export interface BaseJoke {
   category: Category;
   flags: Flags;
   id: number;
   lang: Lang;
   safe: boolean;
-  imgSrc?: string;
 }
 export interface SingleJoke extends BaseJoke {
   type: 'single';
