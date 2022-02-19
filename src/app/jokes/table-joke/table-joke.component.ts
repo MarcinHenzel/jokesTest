@@ -1,8 +1,8 @@
-import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Joke, JokeWithImage } from 'src/app/models/Joke';
 import { JokeLocalStorageService } from '../joke-local-storage.service';
 import { JokesService } from '../jokes.service';
@@ -12,13 +12,14 @@ import { JokesService } from '../jokes.service';
   templateUrl: './table-joke.component.html',
   styleUrls: ['./table-joke.component.css'],
 })
-export class TableJokeComponent implements OnInit, AfterViewInit {
+export class TableJokeComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['image', 'id', 'jokeContent', 'category'];
   imageToShow: any;
   pageSize$!: Observable<number>;
   dataSource: MatTableDataSource<JokeWithImage> = new MatTableDataSource();
   isLoadingResults = true;
   jokes$!: Observable<Joke[]>;
+  subscription!: Subscription;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -28,8 +29,9 @@ export class TableJokeComponent implements OnInit, AfterViewInit {
   ) {
     this.pageSize$ = this.jokeLocal.jokePageSize$;
   }
+
   ngOnInit(): void {
-    this.jokesService.jokes$.subscribe((jokes) => {
+   this.subscription = this.jokesService.jokes$.subscribe((jokes) => {
       this.dataSource.data = jokes.map((joke) => ({...joke, imgSrc: this.getImgSrc(joke)}));
     });
   }
@@ -51,5 +53,8 @@ export class TableJokeComponent implements OnInit, AfterViewInit {
 
   handleImgError(event: any, joke: JokeWithImage) {
     event.target.src = this.getImgSrc(joke);
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

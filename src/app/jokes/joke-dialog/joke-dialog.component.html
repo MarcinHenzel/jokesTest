@@ -1,0 +1,65 @@
+<form [formGroup]="jokeForm" (ngSubmit)="submitForm()" novalidate>
+    <div>
+        <mat-form-field>
+            <mat-label>Category</mat-label>
+          <mat-select formControlName="category">
+            <mat-option value="Misc">Misc</mat-option>
+            <mat-option value="Programming">Programming</mat-option>
+            <mat-option value="Dark">Dark</mat-option>
+            <mat-option value="Punk">Punk</mat-option>
+            <mat-option value="Spooky">Spooky</mat-option>
+            <mat-option value="Christmas">Christmas</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    <div>
+        <mat-form-field>
+            <mat-label>Type</mat-label>
+          <mat-select formControlName="type">
+            <mat-option value="single">Single</mat-option>
+            <mat-option value="twopart">Two part</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+          <mat-form-field>
+            <mat-label>Language</mat-label>
+          <mat-select formControlName="lang" >
+            <mat-option value="cs">Czech</mat-option>
+            <mat-option value="de">German</mat-option>
+            <mat-option value="en">English</mat-option>
+            <mat-option value="es">Spanish</mat-option>
+            <mat-option value="fr">French</mat-option>
+            <mat-option value="pt">Portuguese</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div  formGroupName="flags">
+        <p>Select flag:</p>
+        <p><input type="checkbox" name="nsfw"formControlName="nsfw"><label>Nsfw</label></p>
+        <p><input type="checkbox" name="religious"formControlName="religious"><label>Religious</label></p>
+        <p><input type="checkbox" name="political"formControlName="political"><label>Political</label></p>
+        <p><input type="checkbox" name="racist"formControlName="racist"><label>Racist</label></p>
+        <p><input type="checkbox" name="sexist"formControlName="sexist"><label>Sexist</label></p>
+        <p><input type="checkbox" name="explicit"formControlName="explicit"><label>Explicit</label></p>
+    </div>
+<div>
+    <mat-form-field *ngIf="jokeForm.get('type')?.value === 'single';else twostep"  appearance="fill">
+        <mat-label>Joke</mat-label>
+        <textarea formControlName="joke"  matInput placeholder="Write your joke here"></textarea>
+      </mat-form-field>
+      <ng-template #twostep>
+        <div class="twostep">
+            <mat-form-field   appearance="fill">
+                <mat-label>Setup</mat-label>
+                <textarea formControlName="setup" matInput placeholder="Write your joke here"></textarea>
+              </mat-form-field>
+              <mat-form-field  appearance="fill">
+                <mat-label>Delivery</mat-label>
+                <textarea formControlName="delivery" matInput placeholder="Write your joke here"></textarea>
+              </mat-form-field>
+        </div>
+      </ng-template>
+</div>
+      <button [disabled]="jokeForm.invalid" type="submit" mat-raised-button>Submit</button>
+  </form>

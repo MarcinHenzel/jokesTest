@@ -6,6 +6,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import {  MatInputModule } from '@angular/material/input';
 const materialModules = [
   MatTableModule,
   MatFormFieldModule,
@@ -14,6 +16,8 @@ const materialModules = [
   MatProgressSpinnerModule,
   MatSortModule,
   MatSnackBarModule,
+  MatButtonModule,
+  MatInputModule,
 ];
 
 @NgModule({

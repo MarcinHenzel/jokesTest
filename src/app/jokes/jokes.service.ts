@@ -22,6 +22,7 @@ import { Category, Joke, JokeResponse } from '../models/Joke';
 export class JokesService {
   private readonly MAX_POSSIBLE_AMOUNT = 10;
   private readonly JOKE_API = 'https://v2.jokeapi.dev';
+  private readonly JOKE_SUBMIT_HREF = this.JOKE_API + '/submit';
   private readonly JOKE_HREF = this.JOKE_API + '/joke/any';
   private readonly INFO_HREF = this.JOKE_API + '/info';
   selectedCategories: Category[] = [
@@ -122,5 +123,11 @@ export class JokesService {
     return this.httpClient
       .get<InfoResponse>(this.INFO_HREF)
       .pipe(catchError((err) => of({ error: true as const })));
+  }
+  newJoke(newJoke: Joke) {
+    console.log(newJoke);
+    return this.httpClient
+      .post(this.JOKE_SUBMIT_HREF, {...newJoke, formatVersion: 3})
+      .pipe(catchError((err) => of(err)));
   }
 }
